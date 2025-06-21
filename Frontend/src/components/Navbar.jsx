@@ -5,37 +5,52 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('userType'));
   const [userType, setUserType] = useState(localStorage.getItem('userType'));
+  const [userId, setUserId] = useState(localStorage.getItem('userId'));
 
-  // Update state when location changes (e.g., after logout or route change)
   useEffect(() => {
-    setUserType(localStorage.getItem('userType'));
+    // 👇 When user navigates to /signin, clear localStorage and logout
+    if (location.pathname === '/signin') {
+      localStorage.removeItem('userType');
+      localStorage.removeItem('userId');
+    }
+
+    const storedUserType = localStorage.getItem('userType');
+    const storedUserId = localStorage.getItem('userId');
+
+    setIsLoggedIn(!!storedUserType);
+    setUserType(storedUserType);
+    setUserId(storedUserId);
   }, [location]);
 
   const handleLogout = () => {
     localStorage.removeItem('userType');
-    setUserType(null); // update state
+    localStorage.removeItem('userId');
+    setIsLoggedIn(false);
+    setUserType(null);
+    setUserId(null);
     navigate('/signin');
   };
-
-  const isLoggedIn = !!userType;
 
   return (
     <nav style={styles.nav}>
       <Link to="/" style={styles.logo}>Quick Delivery</Link>
 
       <div style={styles.links}>
-        {!isLoggedIn && (
+        {!isLoggedIn ? (
           <>
             <Link to="/signin" style={styles.link}>Sign In</Link>
             <Link to="/signup" style={styles.link}>Sign Up</Link>
           </>
-        )}
-
-        {isLoggedIn && (
+        ) : (
           <>
             <Link
-              to={userType === 'customer' ? '/customer-dashboard' : '/driver-dashboard'}
+              to={
+                userType === 'customer'
+                  ? `/customer-dashboard/${userId}`
+                  : `/driver-dashboard/${userId}`
+              }
               style={styles.link}
             >
               Dashboard

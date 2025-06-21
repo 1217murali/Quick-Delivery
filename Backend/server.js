@@ -100,25 +100,16 @@ app.post('/api/signin', async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // // Ensure user._id is a string
-    // const payload = {
-    //   userId: user._id.toString(),
-    //   email: user.email,
-    //   userType: user.userType,
-    // };
-
-    // const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
-
-    // console.log('Generated Token:', token);
     console.log('user._id:', user._id);
     console.log('typeof user._id:', typeof user._id);
 
 
     res.status(200).json({
-      message: 'Login successful',
-      userType: user.userType,
-      userId: user._id.toString(),
+    message: 'Login successful',
+    userId: user._id.toString(),
+    userType: user.userType,
     });
+
   } catch (err) {
     console.error('Signin error:', err);
     res.status(500).json({ message: 'Signin failed' });

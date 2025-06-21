@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Signin = () => {
@@ -6,6 +6,13 @@ const Signin = () => {
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // 🔓 Auto-logout on visiting /signin
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userType');
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -17,16 +24,15 @@ const Signin = () => {
       });
 
       const data = await response.json();
-      console.log('Response:', data);
-
       if (response.ok) {
-        localStorage.setItem('userType', userType);
+        localStorage.setItem('userType', data.userType);
+        localStorage.setItem('userId', data.userId);
         alert('Login successful!');
-        
-        if (userType === 'customer') {
-          navigate('/customer-dashboard');
+
+        if (data.userType === 'customer') {
+          navigate(`/customer-dashboard/${data.userId}`);
         } else {
-          navigate('/driver-dashboard');
+          navigate(`/driver-dashboard/${data.userId}`);
         }
       } else {
         alert(data.message || 'Login failed');
@@ -36,8 +42,6 @@ const Signin = () => {
       alert('Something went wrong.');
     }
   };
-
-
 
   return (
     <div style={styles.wrapper}>

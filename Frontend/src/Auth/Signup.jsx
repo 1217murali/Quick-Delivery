@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [userType, setUserType] = useState('');
+  const navigate = useNavigate();
 
   
   const checkEmailExists = async (email) => {
@@ -48,6 +50,7 @@ const Signup = () => {
 
       const data = await response.json();
       alert(data.message || 'Signup successful!');
+      navigate('/signin');
     } catch (error) {
       console.error('Signup error:', error);
       alert('Signup failed. Try again.');
