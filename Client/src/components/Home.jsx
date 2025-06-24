@@ -6,7 +6,8 @@ import Signup from '../Auth/Signup';
 import CustomerDashboard from './CustomerDashboard';
 import DriverDashboard from './DriverDashboard';
 import ProtectedRoute from './ProtectedRoute';
-import HomePage from './HomePage'; // 🆕 import this
+import HomePage from './HomePage'; 
+import DeliveryRequestForm from './DeliveryRequestForm';
 
 function Home() {
   return (
@@ -35,6 +36,8 @@ function Home() {
             </ProtectedRoute>
           }
         />
+        
+        <Route path="/delivery-request" element={<DeliveryRequestForm />} />
 
 
         <Route path="/unauthorized" element={<h2>Unauthorized Access</h2>} />
