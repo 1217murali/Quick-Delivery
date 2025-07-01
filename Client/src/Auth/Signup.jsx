@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [userType, setUserType] = useState('');
   const navigate = useNavigate();
 
-  
   const checkEmailExists = async (email) => {
     try {
       const res = await fetch(`http://localhost:5000/api/check-email?email=${email}`);
@@ -39,7 +39,7 @@ const Signup = () => {
       return;
     }
 
-    const newUser = { email, password, userType };
+    const newUser = { name, email, password, userType };
 
     try {
       const response = await fetch('http://localhost:5000/api/signup', {
@@ -62,6 +62,15 @@ const Signup = () => {
       <div style={styles.container}>
         <h2>Sign Up</h2>
         <form onSubmit={handleSubmit} style={styles.form}>
+          <input
+            type="text"
+            placeholder="Full Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            style={styles.input}
+          />
+
           <select
             value={userType}
             onChange={(e) => setUserType(e.target.value)}

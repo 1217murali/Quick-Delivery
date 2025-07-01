@@ -11,6 +11,7 @@ const Signin = () => {
     // 🔓 Auto-logout on visiting /signin
     localStorage.removeItem('userId');
     localStorage.removeItem('userType');
+    localStorage.removeItem('name');
   }, []);
 
   const handleSubmit = async (e) => {
@@ -27,6 +28,13 @@ const Signin = () => {
       if (response.ok) {
         localStorage.setItem('userType', data.userType);
         localStorage.setItem('userId', data.userId);
+        localStorage.setItem('name', data.name);
+        if (data.name) {
+          localStorage.setItem('name', data.name);
+        } else {
+          console.warn('No name found in login response');
+        }
+
         alert('Login successful!');
 
         if (data.userType === 'customer') {

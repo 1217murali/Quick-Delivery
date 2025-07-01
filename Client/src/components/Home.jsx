@@ -8,6 +8,7 @@ import DriverDashboard from './DriverDashboard';
 import ProtectedRoute from './ProtectedRoute';
 import HomePage from './HomePage'; 
 import DeliveryRequestForm from './DeliveryRequestForm';
+import CustomerDeliveryHistory from './CustomerDeliveryHistory';
 
 function Home() {
   return (
@@ -38,6 +39,7 @@ function Home() {
         />
         
         <Route path="/delivery-request" element={<DeliveryRequestForm />} />
+        <Route path="/customer-dashboard/:id/history" element={<CustomerDeliveryHistory />} />
 
 
         <Route path="/unauthorized" element={<h2>Unauthorized Access</h2>} />
