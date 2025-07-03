@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Signup.css'; 
+import img1 from '/images/img2.jpeg';
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -58,102 +60,70 @@ const Signup = () => {
   };
 
   return (
-    <div style={styles.pageWrapper}>
-      <div style={styles.container}>
-        <h2>Sign Up</h2>
-        <form onSubmit={handleSubmit} style={styles.form}>
-          <input
-            type="text"
-            placeholder="Full Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            style={styles.input}
+    <div className="signup-page">
+      <div className="signup-left">
+        <div className="signup-form-box">
+          <h2>Create Account</h2>
+          <form onSubmit={handleSubmit} className="signup-form">
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+
+            <select
+              value={userType}
+              onChange={(e) => setUserType(e.target.value)}
+              required
+            >
+              <option value="" disabled hidden>Select user type</option>
+              <option value="customer">Customer</option>
+              <option value="driver">Driver</option>
+            </select>
+
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+
+            <input
+              type="password"
+              placeholder="Password (min 8 characters)"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+
+            <button type="submit">Sign Up</button>
+          </form>
+        </div>
+      </div>
+      <div className="signup-right">
+        <div className="floating-quote">
+          “Your journey to faster deliveries <br></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Begins here.”
+        </div>
+        <div className="signup-image-overlay">
+          <img
+            src={img1}
+            alt="Delivery person"
           />
-
-          <select
-            value={userType}
-            onChange={(e) => setUserType(e.target.value)}
-            style={styles.input}
-            required
-          >
-            <option value="" disabled hidden>Select user type</option>
-            <option value="customer">Customer</option>
-            <option value="driver">Driver</option>
-          </select>
-
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={styles.input}
-          />
-
-          <input
-            type="password"
-            placeholder="Password (min 8 characters)"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={styles.input}
-          />
-
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            style={styles.input}
-          />
-
-          <button type="submit" style={styles.button}>Register</button>
-        </form>
+        </div>
       </div>
     </div>
   );
-};
-
-const styles = {
-  pageWrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',
-    backgroundColor: '#f2f2f2',
-  },
-  container: {
-    width: '100%',
-    maxWidth: '400px',
-    padding: '30px',
-    borderRadius: '10px',
-    backgroundColor: '#fff',
-    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
-    textAlign: 'center',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '15px',
-  },
-  input: {
-    padding: '10px',
-    fontSize: '16px',
-    borderRadius: '5px',
-    border: '1px solid #ccc',
-  },
-  button: {
-    padding: '10px',
-    backgroundColor: '#28a745',
-    color: '#fff',
-    border: 'none',
-    fontWeight: 'bold',
-    fontSize: '16px',
-    cursor: 'pointer',
-    borderRadius: '5px',
-  },
 };
 
 export default Signup;

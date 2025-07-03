@@ -42,6 +42,27 @@ const DriverDashboard = () => {
   };
 
   const renderRequests = () => {
+    if (filter === 'Feedback') {
+      const feedbackDeliveries = (requests.completed || []).filter(
+        (req) => req.feedback
+      );
+
+      return feedbackDeliveries.length === 0 ? (
+        <p>No feedbacks given yet.</p>
+      ) : (
+        feedbackDeliveries.map((req) => (
+          <div key={req._id} style={styles.card}>
+            <p><strong>Pickup:</strong> {req.pickupAddress}</p>
+            <p><strong>Dropoff:</strong> {req.dropoffAddress}</p>
+            <p><strong>Note:</strong> {req.note}</p>
+            <p style={styles.feedbackText}>
+              <strong>Customer Feedback:</strong> <em>{req.feedback}</em>
+            </p>
+          </div>
+        ))
+      );
+    }
+
     const deliveryList = requests[filter.toLowerCase()] || [];
 
     return deliveryList.length === 0 ? (
@@ -57,8 +78,7 @@ const DriverDashboard = () => {
 
           {filter === 'Pending' && (
             <>
-              <button onClick={() => updateStatus(req._id, 'Accepted')}>Accept</button>{' '}
-              {/* <button onClick={() => updateStatus(req._id, 'Rejected')}>Reject</button> */}
+              <button onClick={() => updateStatus(req._id, 'Accepted')}>Accept</button>
             </>
           )}
 
@@ -68,6 +88,12 @@ const DriverDashboard = () => {
 
           {filter === 'Ongoing' && (
             <button onClick={() => updateStatus(req._id, 'Completed')}>Mark as Completed</button>
+          )}
+
+          {filter === 'Completed' && req.feedback && (
+            <p style={styles.feedbackText}>
+              <strong>Customer Feedback:</strong> <em>{req.feedback}</em>
+            </p>
           )}
         </div>
       ))
@@ -79,11 +105,11 @@ const DriverDashboard = () => {
       <h2>Welcome Driver {localStorage.getItem('name')}</h2>
 
       <div style={styles.filterButtons}>
-        <button onClick={() => setFilter('Pending')}>Pending</button>{' '}
-        <button onClick={() => setFilter('Accepted')}>Accepted</button>{' '}
-        <button onClick={() => setFilter('Ongoing')}>Ongoing</button>{' '}
-        <button onClick={() => setFilter('Completed')}>Completed</button>{' '}
-        {/* <button onClick={() => setFilter('Rejected')}>Rejected</button> */}
+        <button onClick={() => setFilter('Pending')}>Pending</button>
+        <button onClick={() => setFilter('Accepted')}>Accepted</button>
+        <button onClick={() => setFilter('Ongoing')}>Ongoing</button>
+        <button onClick={() => setFilter('Completed')}>Completed</button>
+        <button onClick={() => setFilter('Feedback')}>Feedback</button>
       </div>
 
       {renderRequests()}
@@ -102,8 +128,17 @@ const styles = {
   filterButtons: {
     marginBottom: '20px',
     display: 'flex',
-    gap: '10px'
-  }
+    gap: '10px',
+    flexWrap: 'wrap',
+  },
+  feedbackText: {
+    marginTop: '10px',
+    color: '#065f46',
+    fontStyle: 'italic',
+    backgroundColor: '#d1fae5',
+    padding: '8px',
+    borderRadius: '6px',
+  },
 };
 
 export default DriverDashboard;

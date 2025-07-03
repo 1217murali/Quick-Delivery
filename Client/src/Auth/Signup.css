@@ -1,0 +1,119 @@
+/* Signup Page Layout */
+.signup-page {
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Left - Form Section */
+.signup-left {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f9fcff, #dfefff);
+  padding: 40px;
+}
+
+.signup-form-box {
+  width: 100%;
+  max-width: 400px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.signup-form-box h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.signup-form input,
+.signup-form select {
+  padding: 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.signup-form input:focus,
+.signup-form select:focus {
+  border-color: #007bff;
+}
+
+.signup-form button {
+  padding: 12px;
+  background: linear-gradient(to right, #42a5f5, #7e57c2);
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signup-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Right - Image Section */
+.signup-right {
+  flex: 1;
+  background: linear-gradient(to bottom right, #e0f2f1, #fce4ec);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.signup-image-overlay img {
+  width: 90%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .signup-page {
+    flex-direction: column;
+  }
+
+  .signup-right {
+    order: -1;
+    padding: 20px;
+  }
+
+  .signup-image-overlay img {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+.floating-quote {
+  font-size: 2rem;
+  color: #37474f;
+  margin-bottom: 20px;
+}
+
+/* Image */
+.signup-image-overlay img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
