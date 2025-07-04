@@ -1,0 +1,117 @@
+/* ───────────  GENERAL / ORIGINAL  ─────────── */
+.wrapper {
+  min-height: 100vh;
+  overflow: auto;
+  background: linear-gradient(135deg, #e0f7fa 0%, #f9f9f9 100%);
+  padding: 50px 20px;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background: #ffffff;
+  padding: 50px 40px;
+  border-radius: 20px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.1);
+  max-width: 1100px;
+  width: 100%;
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.heading { font-size: 30px; color: #1f2937; margin-bottom: 10px; font-weight: 600; }
+.subtext { font-size: 16px; color: #6b7280; margin-bottom: 35px; }
+
+/* Dashboard grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+  padding: 0 10px;
+}
+.card-hover {
+  background: #f0f9ff;
+  padding: 30px 25px;
+  border-radius: 16px;
+  text-decoration: none;
+  color: #1f2937;
+  box-shadow: 0 6px 15px rgba(0,0,0,.05);
+  transition: transform .3s, box-shadow .3s, background .3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-hover img { width: 70px; height: 70px; margin-bottom: 20px; transition: transform .3s; }
+.card-hover h3 { font-size: 20px; margin-bottom: 10px; color: #2563eb; font-weight: 600; }
+.card-hover p  { font-size: 14px; color: #4b5563; line-height: 1.5; }
+
+.card-hover:hover       { background: #e6f2ff; transform: translateY(-6px); box-shadow: 0 12px 28px rgba(0,0,0,.15); }
+.card-hover:hover img   { transform: scale(1.1); }
+
+/* ───────────  NEW CUSTOMER SERVICES SECTION  ─────────── */
+.service-section      { margin-top: 60px; }
+.section-title        { font-size: 26px; font-weight: 600; color: #1f2937; margin-bottom: 24px; }
+
+/* Service grid */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 25px;
+}
+
+/* Service card */
+.service-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 24px 20px;
+  box-shadow: 0 6px 14px rgba(0,0,0,.06);
+  transition: transform .3s, box-shadow .3s;
+  animation: slideUp .6s ease both;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0,0,0,.12);
+}
+
+.service-title { font-size: 18px; color: #2563eb; font-weight: 600; margin-bottom: 8px; }
+.service-text  { font-size: 14px; color: #4b5563; line-height: 1.5; }
+
+/* ───────────  MEDIA QUERIES  ─────────── */
+@media (max-width: 768px) {
+  .container   { padding: 35px 25px; }
+  .heading     { font-size: 26px; }
+  .subtext     { font-size: 15px; margin-bottom: 28px; }
+
+  .card-hover  { padding: 24px 20px; }
+  .card-hover h3 { font-size: 18px; }
+  .card-hover p  { font-size: 13px; }
+  .card-hover img{ width: 60px; height: 60px; }
+
+  .service-title { font-size: 17px; }
+  .service-text  { font-size: 13px; }
+}
+
+@media (max-width: 480px) {
+  .wrapper     { padding: 30px 10px; }
+  .container   { padding: 24px 15px; }
+  .heading     { font-size: 24px; }
+
+  .grid, .service-grid { grid-template-columns: 1fr; gap: 22px; }
+
+  .card-hover  { padding: 20px 15px; }
+  .service-card{ padding: 20px 15px; }
+}

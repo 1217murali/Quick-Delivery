@@ -10,10 +10,7 @@ const CustomerDeliveryHistory = () => {
     const fetchHistory = async () => {
       try {
         const response = await fetch(`http://localhost:5000/api/customers/${id}/history`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         setDeliveries(data);
       } catch (error) {
@@ -23,16 +20,13 @@ const CustomerDeliveryHistory = () => {
         setLoading(false);
       }
     };
-
-    if (id) {
-      fetchHistory();
-    }
+    if (id) fetchHistory();
   }, [id]);
 
   if (loading) {
     return (
       <div style={styles.wrapper}>
-        <p style={{ fontSize: '18px', color: '#333' }}>Loading delivery history...</p>
+        <p style={styles.loadingText}>Loading delivery history...</p>
       </div>
     );
   }
@@ -40,7 +34,9 @@ const CustomerDeliveryHistory = () => {
   return (
     <div style={styles.wrapper}>
       <div style={styles.container}>
-        <h2 style={styles.heading}>📦 Delivery History for Customer {localStorage.getItem('name')}</h2>
+        <h2 style={styles.heading}>
+          📦 Delivery History for Customer {localStorage.getItem('name')}
+        </h2>
 
         <Link
           to={`/customer-dashboard/${id}`}
@@ -54,107 +50,79 @@ const CustomerDeliveryHistory = () => {
         {deliveries.length === 0 ? (
           <p style={styles.empty}>No delivery history found.</p>
         ) : (
-          <div style={{ overflowX: 'auto' }}>
+          <div style={styles.tableWrapper}>
             <table style={styles.table}>
               <thead>
                 <tr>
-                  <th style={styles.th}>Pickup Address</th>
-                  <th style={styles.th}>Dropoff Address</th>
-                  <th style={styles.th}>Status</th>
-                  <th style={styles.th}>Driver Name</th>
-                  <th style={styles.th}>Timestamp</th>
+                  {['Pickup', 'Dropoff', 'Status', 'Driver', 'Timestamp'].map((th) => (
+                    <th key={th} style={styles.th}>{th} Address</th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
-                {deliveries.map((delivery, index) => (
-                  <React.Fragment key={index}>
-                    <tr style={index % 2 === 0 ? styles.stripedRow : null}>
-                      <td style={styles.td}>{delivery.pickupAddress}</td>
-                      <td style={styles.td}>{delivery.dropoffAddress}</td>
+                {deliveries.map((d, i) => (
+                  <React.Fragment key={d._id}>
+                    <tr style={i % 2 === 0 ? styles.stripedRow : styles.row}>
+                      <td style={styles.td}>{d.pickupAddress}</td>
+                      <td style={styles.td}>{d.dropoffAddress}</td>
                       <td style={styles.td}>
-                        <span
-                          style={{
-                            padding: '4px 10px',
-                            borderRadius: '20px',
-                            fontSize: '12px',
-                            fontWeight: 'bold',
-                            color: delivery.status === 'Completed' ? '#065f46' : '#92400e',
-                            backgroundColor: delivery.status === 'Completed' ? '#d1fae5' : '#fef3c7',
-                          }}
-                        >
-                          {delivery.status}
+                        <span style={{
+                          ...styles.statusBadge,
+                          ...(d.status === 'Completed'
+                            ? styles.completedBadge
+                            : styles.inProgressBadge),
+                        }}>
+                          {d.status}
                         </span>
                       </td>
-                      <td style={styles.td}>{delivery.driverName || 'Not Assigned'}</td>
-                      <td style={styles.td}>{new Date(delivery.createdAt).toLocaleString()}</td>
+                      <td style={styles.td}>{d.driverName ?? 'Not Assigned'}</td>
+                      <td style={styles.td}>
+                        {new Date(d.createdAt).toLocaleString()}
+                      </td>
                     </tr>
 
-                    {delivery.status === 'Completed' && (
+                    {d.status === 'Completed' && (
                       <tr>
-                        <td colSpan="5" style={{ padding: '10px 20px' }}>
-                          {delivery.feedback ? (
-                            <p style={{ color: '#065f46', fontStyle: 'italic' }}>
-                              <strong>Feedback:</strong> {delivery.feedback}
+                        <td colSpan="5" style={styles.feedbackTd}>
+                          {d.feedback ? (
+                            <p style={styles.feedbackText}>
+                              <strong>Feedback:</strong> {d.feedback}
                             </p>
                           ) : (
                             <form
                               onSubmit={async (e) => {
                                 e.preventDefault();
                                 const feedbackText =
-                                  e.target.elements[`feedback-${delivery._id}`].value;
+                                  e.target.elements[`feedback-${d._id}`].value;
                                 try {
-                                  const response = await fetch(
-                                    `http://localhost:5000/api/deliveries/${delivery._id}/feedback`,
+                                  const res = await fetch(
+                                    `http://localhost:5000/api/deliveries/${d._id}/feedback`,
                                     {
                                       method: 'POST',
-                                      headers: {
-                                        'Content-Type': 'application/json',
-                                      },
+                                      headers: { 'Content-Type': 'application/json' },
                                       body: JSON.stringify({ feedback: feedbackText }),
                                     }
                                   );
-                                  if (!response.ok) throw new Error('Failed to submit feedback');
-
-                                  // Update local state with submitted feedback
+                                  if (!res.ok) throw new Error('Failed to submit feedback');
                                   setDeliveries((prev) =>
-                                    prev.map((d) =>
-                                      d._id === delivery._id
-                                        ? { ...d, feedback: feedbackText }
-                                        : d
+                                    prev.map((x) =>
+                                      x._id === d._id ? { ...x, feedback: feedbackText } : x
                                     )
                                   );
-                                } catch (error) {
-                                  console.error('Error submitting feedback:', error);
+                                } catch (err) {
+                                  console.error(err);
                                   alert('Error submitting feedback');
                                 }
                               }}
+                              style={styles.feedbackForm}
                             >
                               <textarea
-                                name={`feedback-${delivery._id}`}
-                                placeholder="Write your feedback here..."
-                                rows="3"
-                                style={{
-                                  width: '100%',
-                                  padding: '10px',
-                                  borderRadius: '8px',
-                                  border: '1px solid #ccc',
-                                  resize: 'none',
-                                }}
+                                name={`feedback-${d._id}`}
+                                placeholder="Write your feedback..."
+                                style={styles.textarea}
                                 required
                               />
-                              <button
-                                type="submit"
-                                style={{
-                                  marginTop: '10px',
-                                  padding: '6px 12px',
-                                  border: 'none',
-                                  borderRadius: '6px',
-                                  backgroundColor: '#2563eb',
-                                  color: 'white',
-                                  fontWeight: 'bold',
-                                  cursor: 'pointer',
-                                }}
-                              >
+                              <button type="submit" style={styles.submitButton}>
                                 Submit Feedback
                               </button>
                             </form>
@@ -176,63 +144,125 @@ const CustomerDeliveryHistory = () => {
 const styles = {
   wrapper: {
     minHeight: '100vh',
-    background: 'linear-gradient(to right, #f0f9ff, #e0f2fe)',
-    padding: '40px 20px',
+    background: '#f0f9ff',
+    padding: '50px 20px',
     fontFamily: 'Segoe UI, sans-serif',
+    color: '#374151',
+  },
+  loadingText: {
+    fontSize: '18px',
+    color: '#374151',
+    textAlign: 'center',
+    marginTop: '100px',
   },
   container: {
-    backgroundColor: '#ffffff',
-    padding: '30px 40px',
-    borderRadius: '16px',
-    boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
     maxWidth: '1100px',
     margin: '0 auto',
+    background: '#fff',
+    padding: '40px',
+    borderRadius: '12px',
+    boxShadow: '0 10px 24px rgba(0, 0, 0, 0.08)',
   },
   heading: {
-    fontSize: '24px',
-    color: '#1f2937',
+    fontSize: '28px',
     marginBottom: '20px',
+    color: '#1f2937',
   },
   backLink: {
     display: 'inline-block',
     marginBottom: '20px',
     textDecoration: 'none',
-    color: '#2563eb',
-    fontWeight: 'bold',
-    padding: '6px 12px',
-    border: '1px solid #2563eb',
-    borderRadius: '6px',
-    backgroundColor: '#f0f9ff',
+    color: '#1e40af',
+    fontWeight: 600,
+    padding: '8px 16px',
+    border: '2px solid #1e40af',
+    borderRadius: '8px',
+    background: '#f0f9ff',
     transition: '0.3s',
   },
   empty: {
     fontSize: '16px',
     color: '#6b7280',
+    textAlign: 'center',
+    margin: '40px 0',
+  },
+  tableWrapper: {
+    overflowX: 'auto',
   },
   table: {
     width: '100%',
-    borderCollapse: 'collapse',
-    backgroundColor: '#fff',
-    borderRadius: '8px',
-    overflow: 'hidden',
-    boxShadow: '0 0 8px rgba(0, 0, 0, 0.05)',
+    borderCollapse: 'separate',
+    borderSpacing: '0 8px',
   },
   th: {
-    backgroundColor: '#f3f4f6',
-    color: '#111827',
     textAlign: 'left',
-    padding: '12px',
-    fontWeight: '600',
-    borderBottom: '1px solid #e2e8f0',
+    fontSize: '16px',
+    fontWeight: 600,
+    padding: '12px 16px',
+    background: '#f3f4f6',
+    color: '#111827',
   },
-  td: {
-    padding: '12px',
-    borderBottom: '1px solid #f1f5f9',
-    color: '#374151',
-    fontSize: '14px',
+  row: {
+    background: '#fff',
   },
   stripedRow: {
-    backgroundColor: '#f9fafb',
+    background: '#f9fafb',
+  },
+  td: {
+    padding: '12px 16px',
+    verticalAlign: 'top',
+    fontSize: '15px',
+    color: '#374151',
+  },
+  statusBadge: {
+    padding: '4px 12px',
+    borderRadius: '20px',
+    fontSize: '13px',
+    fontWeight: 500,
+    display: 'inline-block',
+  },
+  completedBadge: {
+    color: '#065f46',
+    background: '#d1fae5',
+  },
+  inProgressBadge: {
+    color: '#92400e',
+    background: '#fef3c7',
+  },
+  feedbackTd: {
+    padding: '16px',
+    background: '#f9fafb',
+    borderTop: '1px solid #e5e7eb',
+  },
+  feedbackText: {
+    color: '#065f46',
+    fontStyle: 'italic',
+    margin: 0,
+  },
+  feedbackForm: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  },
+  textarea: {
+    width: '100%',
+    minHeight: '80px',
+    padding: '12px',
+    borderRadius: '8px',
+    border: '1px solid #d1d5db',
+    fontSize: '14px',
+    fontFamily: 'Segoe UI, sans-serif',
+  },
+  submitButton: {
+    alignSelf: 'flex-end',
+    padding: '8px 16px',
+    background: '#2563eb',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '6px',
+    fontWeight: 600,
+    cursor: 'pointer',
+    transition: 'background 0.3s',
   },
 };
 

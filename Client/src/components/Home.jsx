@@ -9,6 +9,8 @@ import ProtectedRoute from './ProtectedRoute';
 import HomePage from './HomePage'; 
 import DeliveryRequestForm from './DeliveryRequestForm';
 import CustomerDeliveryHistory from './CustomerDeliveryHistory';
+import CustomerProfile from './CustomerProfile';
+import Footer from './Footer';
 
 function Home() {
   return (
@@ -40,10 +42,11 @@ function Home() {
         
         <Route path="/delivery-request" element={<DeliveryRequestForm />} />
         <Route path="/customer-dashboard/:id/history" element={<CustomerDeliveryHistory />} />
-
+        <Route path="/customer-profile/:id" element={<CustomerProfile />} />
 
         <Route path="/unauthorized" element={<h2>Unauthorized Access</h2>} />
       </Routes>
+      <Footer />
     </Router>
   );
 }
