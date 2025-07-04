@@ -10,7 +10,6 @@ const Signin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 🔓 Auto-logout on visiting /signin
     localStorage.removeItem('userId');
     localStorage.removeItem('userType');
     localStorage.removeItem('name');

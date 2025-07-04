@@ -7,7 +7,6 @@ body {
   color: #222;
 }
 
-/* Navbar */
 .dashboard-navbar {
   display: flex;
   top: 0px;
@@ -16,7 +15,6 @@ body {
   align-items: center;
   padding: 20px 30px;
   background-color: #007bff;
-  /* background: linear-gradient(90deg, #b79c86, #9dc9e9); */
   color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   flex-wrap: wrap;
@@ -77,7 +75,6 @@ body {
   font-weight: 600;
 }
 
-/* Filter Buttons */
 .filter-buttons {
   display: flex;
   justify-content: center;
@@ -111,7 +108,6 @@ body {
   font-weight: 700;
 }
 
-/* Cards */
 .request-list {
   display: flex;
   flex-direction: row;
@@ -183,13 +179,12 @@ body {
   font-size: 17px;
 }
 
-/* Empty Message
 .empty-message {
   text-align: center;
   color: #666;
   font-style: italic;
   font-weight: 400;
-} */
+} 
 .empty-message-with-img {
   text-align: center;
   margin: 30px 120px;
@@ -219,7 +214,6 @@ body {
 }
 
 
-/* Responsive */
 @media (max-width: 768px) {
   .dashboard-navbar {
     flex-direction: column;
@@ -264,11 +258,9 @@ body {
   font-size: 20px;
 }
 
-/* Optional: Add left icon for other buttons */
 .icon-left {
   margin-right: 8px;
 }
-/* Footer Styles */
 .dashboard-footer {
   margin-top: 50px;
   background: rgba(6, 0, 0, 0.885);
@@ -329,7 +321,6 @@ body {
   opacity: 0.8;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .footer-sections {
     flex-direction: column;

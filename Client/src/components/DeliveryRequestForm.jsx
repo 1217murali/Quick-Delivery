@@ -77,7 +77,6 @@ const DeliveryRequestForm = () => {
           position: 'relative',
         }}
       >
-        {/* Back to Dashboard Link */}
         <Link
           to={`/customer-dashboard/${customerId}`}
           style={{

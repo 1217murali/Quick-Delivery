@@ -10,7 +10,6 @@ const Navbar = () => {
   const [userId, setUserId] = useState(localStorage.getItem('userId'));
 
   useEffect(() => {
-    // 👇 When user navigates to /signin, clear localStorage and logout
     if (location.pathname === '/signin') {
       localStorage.removeItem('userType');
       localStorage.removeItem('userId');
