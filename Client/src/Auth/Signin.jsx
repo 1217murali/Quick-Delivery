@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import api from '../api';
 
 
 const Signin = () => {
@@ -19,7 +20,7 @@ const Signin = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/api/signin', {
+      const response = await fetch('/api/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, userType }),
